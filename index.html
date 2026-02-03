@@ -2,17 +2,19 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Valentine 💖</title>
 
 <style>
 *{
   margin:0;
   padding:0;
+  box-sizing:border-box;
   font-family: Arial, sans-serif;
 }
 
 body{
-  height:100vh;
+  min-height:100vh;
   background:#ffd6e8;
   display:flex;
   justify-content:center;
@@ -22,34 +24,36 @@ body{
 
 .card{
   background:#fff;
-  padding:30px;
-  border-radius:15px;
+  padding:45px 40px;
+  border-radius:24px;
   text-align:center;
-  box-shadow:0 10px 25px rgba(0,0,0,0.2);
-  position:relative;
-  z-index:2;
+  box-shadow:0 20px 45px rgba(0,0,0,0.25);
+  width:390px;
+  max-width:92%;
 }
 
 .card img{
-  width:120px;
-  margin-bottom:15px;
+  width:165px;
+  margin-bottom:22px;
 }
 
 h2{
-  margin-bottom:20px;
+  font-size:28px;
+  margin-bottom:28px;
+  color:#333;
 }
 
 .buttons{
   display:flex;
   justify-content:center;
-  gap:20px;
+  gap:30px;
 }
 
 button{
-  padding:10px 25px;
+  padding:16px 38px;
   border:none;
-  border-radius:20px;
-  font-size:16px;
+  border-radius:32px;
+  font-size:19px;
   cursor:pointer;
 }
 
@@ -62,33 +66,27 @@ button{
   background:#ccc;
 }
 
-/* ❤️ Hearts animation */
+/* ❤️ Hearts */
 .heart{
   position:fixed;
   bottom:-20px;
-  font-size:24px;
+  font-size:28px;
   animation: floatUp 4s linear forwards;
 }
 
 @keyframes floatUp{
-  from{
-    transform:translateY(0);
-    opacity:1;
-  }
-  to{
-    transform:translateY(-100vh);
-    opacity:0;
-  }
+  from{transform:translateY(0);opacity:1;}
+  to{transform:translateY(-110vh);opacity:0;}
 }
 
-/* 🟣 Bounce effect */
+/* 🟣 Bounce */
 .bounce{
-  animation: bounce 0.4s ease;
+  animation:bounce 0.35s ease;
 }
 
 @keyframes bounce{
   0%{transform:scale(1);}
-  50%{transform:scale(1.2);}
+  50%{transform:scale(1.25);}
   100%{transform:scale(1);}
 }
 </style>
@@ -97,8 +95,7 @@ button{
 <body>
 
 <div class="card">
- <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTG3lfMOpNq0uh7wbVh3ER14gQdTt_ydu1zfQ&s">
-
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTG3lfMOpNq0uh7wbVh3ER14gQdTt_ydu1zfQ&s">
   <h2>Will you be my Valentine? 💕</h2>
 
   <div class="buttons">
@@ -109,65 +106,61 @@ button{
 
 <script>
 const yesBtn = document.getElementById("yes");
-const noBtn = document.getElementById("no");
+const noBtn  = document.getElementById("no");
 
-function moveYesButton() {
+/* 📳 vibration helper */
+function vibrate(ms){
+  if(navigator.vibrate) navigator.vibrate(ms);
+}
+
+/* YES escape + vibration */
+function moveYesButton(){
+  vibrate(80); // ✅ YES vibration
+
   yesBtn.style.position = "fixed";
 
-  const btnW = yesBtn.offsetWidth;
-  const btnH = yesBtn.offsetHeight;
-  const padding = 20;
-
-  const maxX = window.innerWidth - btnW - padding;
-  const maxY = window.innerHeight - btnH - padding;
+  const maxX = window.innerWidth - yesBtn.offsetWidth - 20;
+  const maxY = window.innerHeight - yesBtn.offsetHeight - 20;
 
   yesBtn.style.left = Math.random() * maxX + "px";
   yesBtn.style.top  = Math.random() * maxY + "px";
 
-  // bounce animation
   yesBtn.classList.remove("bounce");
   void yesBtn.offsetWidth;
   yesBtn.classList.add("bounce");
-
-  // mobile vibration
-  if (navigator.vibrate) {
-    navigator.vibrate(80);
-  }
 }
 
-// Desktop
+/* Desktop */
 yesBtn.addEventListener("mouseenter", moveYesButton);
 
-// Mobile
-yesBtn.addEventListener("touchstart", (e) => {
+/* Mobile */
+yesBtn.addEventListener("touchstart", e=>{
   e.preventDefault();
   moveYesButton();
 });
 
-// ❤️ Hearts generator
-function createHearts() {
-  for(let i=0;i<25;i++){
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.innerHTML = "❤️";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.animationDuration = (2 + Math.random()*3) + "s";
-    document.body.appendChild(heart);
-
-    setTimeout(()=>heart.remove(),4000);
+/* ❤️ Hearts */
+function createHearts(){
+  for(let i=0;i<30;i++){
+    const h = document.createElement("div");
+    h.className="heart";
+    h.innerHTML="❤️";
+    h.style.left=Math.random()*100+"vw";
+    h.style.animationDuration=(2+Math.random()*3)+"s";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),4000);
   }
 }
 
-// NO = success
-noBtn.addEventListener("click", () => {
-  document.body.innerHTML = `
-    <div style="text-align:center">
+/* NO click → vibration + next page */
+noBtn.addEventListener("click", ()=>{
+  vibrate(150); // ✅ NO vibration (stronger)
 
-      
- <img src="https://media.tenor.com/Ozr5vWSmXsUAAAAM/akshay-kumar-funny-face.gif">
-
-      <h1>Ha Bach gaya </h1>
-      <p>You said NO!</p>
+  document.body.innerHTML=`
+    <div class="card">
+      <img src="https://media.tenor.com/Ozr5vWSmXsUAAAAM/akshay-kumar-funny-face.gif" style="width:200px;margin-bottom:20px">
+      <h2 style="font-size:30px">Ha Bach gaya 😂</h2>
+      <p style="font-size:18px;margin-top:10px">You said NO!</p>
     </div>
   `;
   createHearts();
